@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 void main() {
   return runApp(
@@ -6,7 +7,7 @@ void main() {
       home: Scaffold(
         backgroundColor: Colors.red,
         appBar: AppBar(
-          title: Text('Dicee'),
+          title: Text('Kostka do gry'),
           backgroundColor: Colors.red,
           centerTitle: true,
         ),
@@ -16,7 +17,24 @@ void main() {
   );
 }
 
-class DicePage extends StatelessWidget {
+class DicePage extends StatefulWidget {
+  const DicePage({Key? key}) : super(key: key);
+
+  @override
+  State<DicePage> createState() => _DicePageState();
+}
+
+class _DicePageState extends State<DicePage> {
+  int leftDiceNumber = 1;
+  int rightDiceNumber = 1;
+
+  int generateRandomIntForDecee(){
+    int randomNumber =     Random().nextInt(6) + 1;
+    return randomNumber;
+
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -26,11 +44,16 @@ class DicePage extends StatelessWidget {
             // flex: 2, // ratio dla expand
             child: TextButton(
               onPressed: () {
-                print('lewy wcisniety');
+                setState(() {
+                  // ta funkcja wywoluje build ponownie z nowa wartoscia zmiennej
+
+                  leftDiceNumber =  generateRandomIntForDecee();
+                  rightDiceNumber =  generateRandomIntForDecee();
+                  print('lewy wcisniety po zmianie: $leftDiceNumber');
+                });
               },
-              // padding: const EdgeInsets.all(16.0),
               child: Image.asset(
-                'images/dice1.png',
+                'images/dice$leftDiceNumber.png',
               ),
             ),
           ),
@@ -38,11 +61,15 @@ class DicePage extends StatelessWidget {
             // flex: 1,// ratio dla expand
             child: TextButton(
               onPressed: () {
-                print('prawy wcisniety');
+                setState(() {
+                  // ta funkcja wywoluje build ponownie z nowa wartoscia zmiennej
+                  rightDiceNumber = Random().nextInt(6) + 1;
+                  leftDiceNumber = Random().nextInt(6) + 1;
+                  print('lewy wcisniety po zmianie: $rightDiceNumber');
+                });
               },
-              // padding: const EdgeInsets.all(16.0),
               child: Image.asset(
-                'images/dice3.png',
+                'images/dice$rightDiceNumber.png',
               ),
             ),
           ),
@@ -51,6 +78,8 @@ class DicePage extends StatelessWidget {
     );
   }
 }
+
+// class DicePage extends StatelessWidget {}
 
 // child: Image(
 // image: AssetImage('images/dice1.png'),
